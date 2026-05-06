@@ -9,7 +9,4 @@ services:
         value: production
       - key: PORT
         value: 3000
-    disk:
-      name: sqlite-data
-      mountPath: /data
-      sizeGB: 1
+    
