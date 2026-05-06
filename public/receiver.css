@@ -1,0 +1,3 @@
+/* receiver.css — imports donor.css styles that are shared */
+/* Additional receiver-specific overrides if needed */
+.receiver-theme .stat-card-value { color: #1D4ED8; }

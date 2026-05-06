@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Donor Dashboard — NourishNet</title>
+<link rel="stylesheet" href="global.css"/>
+<link rel="stylesheet" href="dashboard.css"/>
+<link rel="stylesheet" href="donor.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="chatbot.css"/>
+</head>
+<body class="donor-theme">
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="logo-icon">🌾</span>
+    <span class="brand-text">NourishNet</span>
+  </div>
+  <div class="sidebar-role-badge donor-badge">Donor</div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" onclick="showTab('overview')" href="#">
+      <span class="nav-icon">🏠</span><span>My Dashboard</span>
+    </a>
+    <a class="nav-item" onclick="showTab('donate')" href="#">
+      <span class="nav-icon">➕</span><span>New Donation</span>
+    </a>
+    <a class="nav-item" onclick="showTab('mydonations')" href="#">
+      <span class="nav-icon">📦</span><span>My Donations</span>
+    </a>
+    <a class="nav-item" onclick="showTab('history')" href="#">
+      <span class="nav-icon">📋</span><span>History</span>
+    </a>
+    <a class="nav-item" onclick="showTab('profile')" href="#">
+      <span class="nav-icon">👤</span><span>Profile</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-mini" id="donorUserMini"></div>
+    <button class="logout-btn" onclick="logout()">↩ Logout</button>
+  </div>
+</div>
+
+<div class="main-content" id="mainContent">
+  <div class="top-bar">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <a href="index.html" class="tbar-back" title="Back to Login">←</a>
+    <div class="top-bar-title" id="topBarTitle">My Dashboard</div>
+    <div class="top-bar-right">
+      <div class="notif-bell">🔔</div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="page-header">
+      <h1 id="donorWelcome">Welcome back!</h1>
+      <p>Every meal you donate makes a difference</p>
+    </div>
+    <div class="stats-grid" id="donorStats"></div>
+    <div class="dashboard-row">
+      <div class="card flex-2">
+        <div class="card-head">
+          <h3>My Active Donations</h3>
+          <button class="btn-sm btn-primary" onclick="showTab('donate')">+ New</button>
+        </div>
+        <div id="activeDonationsList"></div>
+      </div>
+      <div class="card flex-1">
+        <div class="card-head"><h3>Impact Summary</h3></div>
+        <div class="impact-visual" id="impactVisual"></div>
+      </div>
+    </div>
+    <div class="dashboard-row">
+      <div class="card">
+        <div class="card-head"><h3>Recent Activity</h3></div>
+        <div id="recentActivity"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW DONATION -->
+  <div class="tab-content" id="tab-donate">
+    <div class="page-header">
+      <h1>List a New Donation</h1>
+      <p>Share surplus food with those who need it most</p>
+    </div>
+    <div class="donate-layout">
+      <div class="card donate-form-card">
+        <form id="donationForm" onsubmit="submitDonation(event)">
+          <div class="form-section-title">Food Details</div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Food Name / Description <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">🍱</span>
+                <input type="text" id="foodName" placeholder="e.g., Cooked Rice and Dal" required/>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Category <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">🏷</span>
+                <select id="foodCategory" required>
+                  <option value="">Select category</option>
+                  <option>Cooked Meals</option>
+                  <option>Raw Vegetables</option>
+                  <option>Fruits</option>
+                  <option>Baked Goods</option>
+                  <option>Packaged Food</option>
+                  <option>Dairy Products</option>
+                  <option>Beverages</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Quantity <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">⚖</span>
+                <input type="number" id="foodQty" placeholder="e.g., 50" required/>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Unit <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">📏</span>
+                <select id="foodUnit" required>
+                  <option value="">Select unit</option>
+                  <option>kg</option>
+                  <option>portions / servings</option>
+                  <option>litres</option>
+                  <option>packets</option>
+                  <option>boxes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Best Before / Expiry <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">📅</span>
+                <input type="datetime-local" id="foodExpiry" required/>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Serves (approx people)</label>
+              <div class="input-wrap">
+                <span class="input-icon">👥</span>
+                <input type="number" id="foodServes" placeholder="e.g., 40"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-section-title">Pickup Details</div>
+          <div class="input-group">
+            <label>Pickup Address <span class="req">*</span></label>
+            <div class="input-wrap textarea-wrap">
+              <span class="input-icon">📍</span>
+              <textarea id="pickupAddress" rows="2" placeholder="Full pickup address" required></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Pickup Available From <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">⏰</span>
+                <input type="datetime-local" id="pickupFrom" required/>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Pickup Available Until <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">⏰</span>
+                <input type="datetime-local" id="pickupUntil" required/>
+              </div>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Special Instructions</label>
+            <div class="input-wrap textarea-wrap">
+              <span class="input-icon">📝</span>
+              <textarea id="specialNotes" rows="2" placeholder="Allergen info, handling instructions, etc."></textarea>
+            </div>
+          </div>
+          <div class="form-tags">
+            <label>Tags</label>
+            <div class="tag-options">
+              <label class="tag-check"><input type="checkbox" value="vegetarian"/> 🥦 Vegetarian</label>
+              <label class="tag-check"><input type="checkbox" value="vegan"/> 🌱 Vegan</label>
+              <label class="tag-check"><input type="checkbox" value="halal"/> ☪ Halal</label>
+              <label class="tag-check"><input type="checkbox" value="gluten-free"/> 🌾 Gluten-Free</label>
+              <label class="tag-check"><input type="checkbox" value="nut-free"/> 🥜 Nut-Free</label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" onclick="showTab('overview')">Cancel</button>
+            <button type="submit" class="btn-primary">🍱 List Donation</button>
+          </div>
+          <div id="donationMsg" class="form-msg"></div>
+        </form>
+      </div>
+      <div class="donate-tips">
+        <div class="card tips-card">
+          <h3>💡 Donation Tips</h3>
+          <ul>
+            <li>Cooked food should be donated within 2 hours of preparation</li>
+            <li>Package food securely in covered containers</li>
+            <li>Label items with allergen information when possible</li>
+            <li>Provide accurate expiry times</li>
+          </ul>
+        </div>
+        <div class="card guidelines-card">
+          <h3>📜 Guidelines</h3>
+          <p>We accept cooked meals, fresh produce, packaged foods, and beverages. We do not accept alcohol, expired foods, or items with damaged packaging.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY DONATIONS -->
+  <div class="tab-content" id="tab-mydonations">
+    <div class="page-header">
+      <h1>My Donations</h1>
+      <p>Track the status of all your listed donations</p>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterMyDonations('all')">All</button>
+      <button class="filter-btn" onclick="filterMyDonations('available')">Available</button>
+      <button class="filter-btn" onclick="filterMyDonations('claimed')">Claimed</button>
+      <button class="filter-btn" onclick="filterMyDonations('completed')">Completed</button>
+    </div>
+    <div id="myDonationsList" class="donations-list"></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="tab-content" id="tab-history">
+    <div class="page-header"><h1>Donation History</h1><p>Your complete donation record</p></div>
+    <div class="card"><div class="table-wrap" id="historyTable"></div></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="tab-content" id="tab-profile">
+    <div class="page-header"><h1>My Profile</h1></div>
+    <div class="profile-layout">
+      <div class="card profile-card">
+        <div id="profileContent"></div>
+      </div>
+      <div class="card cert-card">
+        <div class="card-head"><h3>🏅 Donation Certificates</h3></div>
+        <div id="certsList"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DONATION SUCCESS TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="data.js"></script>
+<script src="donor.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

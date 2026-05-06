@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — NourishNet</title>
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="chatbot.css" />
+</head>
+
+<body class="admin-theme">
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-icon">🌾</span>
+      <span class="brand-text">NourishNet</span>
+    </div>
+    <div class="sidebar-role-badge">Admin Panel</div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" onclick="showTab('overview')" href="#">
+        <span class="nav-icon">📊</span><span>Overview</span>
+      </a>
+      <a class="nav-item" onclick="showTab('approvals')" href="#">
+        <span class="nav-icon">✅</span><span>Receiver Approvals</span>
+        <span class="nav-badge" id="approvalBadge">0</span>
+      </a>
+      <a class="nav-item" onclick="showTab('donors')" href="#">
+        <span class="nav-icon">🤝</span><span>All Donors</span>
+      </a>
+      <a class="nav-item" onclick="showTab('receivers')" href="#">
+        <span class="nav-icon">🏠</span><span>All Receivers</span>
+      </a>
+      <a class="nav-item" onclick="showTab('donations')" href="#">
+        <span class="nav-icon">🍱</span><span>All Donations</span>
+      </a>
+      <a class="nav-item" onclick="showTab('reports')" href="#">
+        <span class="nav-icon">📈</span><span>Reports</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar">A</div>
+        <div class="user-info"><strong>Admin</strong><span>Super User</span></div>
+      </div>
+      <button class="logout-btn" onclick="logout()">↩ Logout</button>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <div class="top-bar">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <a href="index.html" class="tbar-back" title="Back to Login">←</a>
+      <div class="top-bar-title" id="topBarTitle">Overview</div>
+      <div class="top-bar-right">
+        <div class="notif-bell" onclick="toggleNotifs()">🔔 <span class="notif-dot" id="notifDot"></span></div>
+        <div class="notif-dropdown" id="notifDropdown"></div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="page-header">
+        <h1>Dashboard Overview</h1>
+        <p id="dashDate"></p>
+      </div>
+      <div class="stats-grid" id="adminStatsGrid"></div>
+      <div class="dashboard-row">
+        <div class="card flex-2">
+          <div class="card-head">
+            <h3>Recent Donations</h3>
+          </div>
+          <div class="table-wrap" id="recentDonationsTable"></div>
+        </div>
+        <div class="card flex-1">
+          <div class="card-head">
+            <h3>Pending Approvals</h3>
+          </div>
+          <div id="pendingList"></div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="card flex-1">
+          <div class="card-head">
+            <h3>Donation Categories</h3>
+          </div>
+          <div class="chart-area" id="categoryChart"></div>
+        </div>
+        <div class="card flex-1">
+          <div class="card-head">
+            <h3>Monthly Activity</h3>
+          </div>
+          <div class="chart-area" id="monthlyChart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPROVALS TAB -->
+    <div class="tab-content" id="tab-approvals">
+      <div class="page-header">
+        <h1>Receiver Approvals</h1>
+        <p>Review and approve NGO / receiver registrations</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterApprovals('pending')">Pending</button>
+        <button class="filter-btn" onclick="filterApprovals('approved')">Approved</button>
+        <button class="filter-btn" onclick="filterApprovals('rejected')">Rejected</button>
+      </div>
+      <div id="approvalsList" class="approvals-list"></div>
+    </div>
+
+    <!-- DONORS TAB -->
+    <div class="tab-content" id="tab-donors">
+      <div class="page-header">
+        <h1>All Donors</h1>
+        <p>Manage registered donors on the platform</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="donorSearch" placeholder="🔍  Search donors..." oninput="renderDonorsTable()" />
+      </div>
+      <div id="donorsTableWrap" class="table-wrap"></div>
+    </div>
+
+    <!-- RECEIVERS TAB -->
+    <div class="tab-content" id="tab-receivers">
+      <div class="page-header">
+        <h1>All Receivers</h1>
+        <p>Manage approved receiver / NGO accounts</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="receiverSearch" placeholder="🔍  Search receivers..." oninput="renderReceiversTable()" />
+      </div>
+      <div id="receiversTableWrap" class="table-wrap"></div>
+    </div>
+
+    <!-- DONATIONS TAB -->
+    <div class="tab-content" id="tab-donations">
+      <div class="page-header">
+        <h1>All Donations</h1>
+        <p>Track every food donation listed on the platform</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterDonations('all')">All</button>
+        <button class="filter-btn" onclick="filterDonations('available')">Available</button>
+        <button class="filter-btn" onclick="filterDonations('claimed')">Claimed</button>
+        <button class="filter-btn" onclick="filterDonations('completed')">Completed</button>
+      </div>
+      <div id="donationsTableWrap" class="table-wrap"></div>
+    </div>
+
+    <!-- REPORTS TAB -->
+    <div class="tab-content" id="tab-reports">
+      <div class="page-header">
+        <h1>Reports & Analytics</h1>
+        <p>Platform-wide performance insights</p>
+      </div>
+      <div id="reportsContent" class="reports-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- APPROVAL MODAL -->
+  <div class="modal-overlay" id="approvalModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Review Application</h3>
+        <button onclick="closeModal('approvalModal')">✕</button>
+      </div>
+      <div class="modal-body" id="approvalModalBody"></div>
+      <div class="modal-footer">
+        <button class="btn-danger" onclick="rejectReceiver()">✕ Reject</button>
+        <button class="btn-success" onclick="approveReceiver()">✓ Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

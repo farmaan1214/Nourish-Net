@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NourishNet — Food Donation Platform</title>
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="chatbot.css" />
+</head>
+
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <canvas id="nerveCanvas"></canvas>
+    <div class="splash-content">
+      <div class="splash-glyph">
+        <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="45" cy="45" r="42" stroke="rgba(76,175,80,0.3)" stroke-width="1.5" />
+          <circle cx="45" cy="45" r="42" stroke="url(#g1)" stroke-width="2.5" stroke-dasharray="60 204"
+            stroke-linecap="round" />
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CAF50" />
+              <stop offset="1" stop-color="#8BC34A" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="splash-inner-glyph">
+          <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+            <circle cx="27" cy="27" r="24" stroke="rgba(139,195,74,0.4)" stroke-width="1.5" />
+            <circle cx="27" cy="27" r="24" stroke="url(#g2)" stroke-width="2" stroke-dasharray="30 120"
+              stroke-linecap="round" />
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8BC34A" />
+                <stop offset="1" stop-color="#4CAF50" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="splash-logo-center">🌾</div>
+      </div>
+      <div class="splash-title">NourishNet</div>
+      <div class="splash-sub">Feed Hunger · Prevent Waste</div>
+      <div class="splash-bar-wrap">
+        <div class="splash-bar"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="login-wrapper">
+    <!-- About Us Button -->
+    <button class="about-us-btn" onclick="openAbout()">About Us</button>
+
+
+    <div class="brand-panel">
+      <div class="brand-logo">
+        <span class="logo-icon">🌾</span>
+      </div>
+      <h1 class="brand-name">NourishNet</h1>
+      <p class="brand-tagline">Connecting surplus with need,<br />one meal at a time.</p>
+      <div class="brand-stats">
+        <div class="stat"><span class="stat-num">12,400+</span><span class="stat-label">Meals Donated</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">380+</span><span class="stat-label">Active Donors</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">95+</span><span class="stat-label">NGO Partners</span></div>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <div class="card-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to your account</p>
+      </div>
+
+      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉</span>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="loginPassword" placeholder="••••••••" required />
+            <button type="button" class="eye-btn" onclick="togglePwd(this)">👁</button>
+          </div>
+        </div>
+        <div class="form-meta">
+          <label class="checkbox-label"><input type="checkbox" /> Remember me</label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary">Sign In <span>→</span></button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="register-cta">
+        <p>New to NourishNet?</p>
+        <a href="register.html" class="btn-secondary">Create an Account</a>
+      </div>
+
+
+      <div id="loginMsg" class="login-msg"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT MODAL -->
+  <div id="aboutModal">
+    <div class="about-card">
+      <div class="about-card-bg"><canvas id="aboutCanvas"></canvas></div>
+      <button class="about-close" onclick="closeAbout()">← Back</button>
+      <div class="about-inner">
+        <div class="about-eyebrow">About NourishNet</div>
+        <div class="about-headline">Fighting Hunger.<br /><span>Eliminating Waste.</span></div>
+        <div class="about-tagline">to feed hunger and to prevent food wastage with an ai integrated system developed by
+          farmaan of final year student studying b.tech aids.</div>
+        <div class="about-pillars">
+          <div class="pillar">
+            <div class="pillar-icon">🍽</div>
+            <h4>Feed the Hungry</h4>
+            <p>We connect restaurants, events, and individuals with NGOs and shelters to ensure no cooked meal goes to
+              waste while people go hungry.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">♻️</div>
+            <h4>Prevent Food Waste</h4>
+            <p>Over 40% of food produced globally is wasted. NourishNet creates a real-time bridge to redirect surplus
+              before it expires.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🤖</div>
+            <h4>AI-Powered Matching</h4>
+            <p>Our intelligent system predicts demand, optimises pickup routes, and matches donors to receivers based on
+              location, quantity and urgency.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🌐</div>
+            <h4>Community Network</h4>
+            <p>Every meal saved strengthens a community. We build trust between donors and NGOs through verified
+              profiles and transparent tracking.</p>
+          </div>
+        </div>
+        <div class="about-divider"></div>
+        <div class="dev-card">
+          <div class="dev-avatar">F</div>
+          <div class="dev-info">
+            <h4>Farmaan</h4>
+            <p>Developer & Creator of NourishNet — a final year B.Tech student specialising in <strong
+                style="color:rgba(255,255,255,.8)">Artificial Intelligence & Data Science (AIDS)</strong>. Built this
+              platform as a capstone project to solve real-world food inequity using modern web technology and AI-driven
+              systems.</p>
+            <div class="dev-badge">🎓 B.Tech AIDS · Final Year</div>
+          </div>
+        </div>
+        <div class="about-ai">
+          <div class="ai-icon">⚡</div>
+          <div class="ai-text">
+            <h5>AI Integration</h5>
+            <p>NourishNet leverages machine learning for demand forecasting, natural language search for food matching,
+              smart expiry alerts, and predictive analytics to maximise every donation's impact — ensuring food reaches
+              the right hands at the right time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="login.js"></script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Register — NourishNet</title>
+<link rel="stylesheet" href="global.css"/>
+<link rel="stylesheet" href="register.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="chatbot.css"/>
+</head>
+<body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+<div class="register-wrapper">
+  <div class="reg-header">
+    <a href="index.html" class="back-link">← Back to Login</a>
+    <div class="reg-logo"><span>🌾</span> NourishNet</div>
+  </div>
+
+  <!-- Step Indicator -->
+  <div class="steps-bar">
+    <div class="step active" id="step-dot-1"><span>1</span><label>Details</label></div>
+    <div class="step-line"></div>
+    <div class="step" id="step-dot-2"><span>2</span><label>Role</label></div>
+    <div class="step-line"></div>
+    <div class="step" id="step-dot-3"><span>3</span><label>Verify OTP</label></div>
+    <div class="step-line"></div>
+    <div class="step" id="step-dot-4"><span>4</span><label>Done</label></div>
+  </div>
+
+  <div class="reg-card">
+
+    <!-- STEP 1: Personal Details -->
+    <div class="reg-step active" id="step1">
+      <div class="step-title">
+        <h2>Create Your Account</h2>
+        <p>Fill in your personal information to get started</p>
+      </div>
+      <form id="step1Form">
+        <div class="form-row">
+          <div class="input-group">
+            <label>Full Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="regName" placeholder="John Doe" required/>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Phone Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">📱</span>
+              <input type="tel" id="regPhone" placeholder="+91 98765 43210" required/>
+            </div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Email Address <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">✉</span>
+            <input type="email" id="regEmail" placeholder="you@example.com" required/>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Password <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regPassword" placeholder="Minimum 8 characters" required/>
+            <button type="button" class="eye-btn" onclick="togglePwd(this)">👁</button>
+          </div>
+          <div class="pwd-strength" id="pwdStrength">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <span id="strengthText"></span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Address <span class="req">*</span></label>
+          <div class="input-wrap textarea-wrap">
+            <span class="input-icon">📍</span>
+            <textarea id="regAddress" rows="3" placeholder="Street, City, State, PIN Code" required></textarea>
+          </div>
+        </div>
+        <button type="button" class="btn-primary" onclick="goStep2()">Continue <span>→</span></button>
+      </form>
+    </div>
+
+    <!-- STEP 2: Role Selection -->
+    <div class="reg-step" id="step2">
+      <div class="step-title">
+        <h2>Choose Your Role</h2>
+        <p>How would you like to participate in NourishNet?</p>
+      </div>
+      <div class="role-cards">
+        <div class="role-card" id="donorCard" onclick="selectRole('donor')">
+          <div class="role-icon">🤝</div>
+          <h3>Donor</h3>
+          <p>I have surplus food to donate — from restaurants, events, homes, or farms.</p>
+          <ul class="role-perks">
+            <li>✓ List food donations instantly</li>
+            <li>✓ Track pickup status</li>
+            <li>✓ Get donation certificates</li>
+            <li>✓ Immediate account access</li>
+          </ul>
+          <div class="role-badge">Instant Access</div>
+        </div>
+        <div class="role-card" id="receiverCard" onclick="selectRole('receiver')">
+          <div class="role-icon">🏠</div>
+          <h3>Receiver / NGO</h3>
+          <p>I represent an NGO, shelter, or community kitchen that needs food donations.</p>
+          <ul class="role-perks">
+            <li>✓ Browse available donations</li>
+            <li>✓ Request food pickups</li>
+            <li>✓ Manage distributions</li>
+            <li>✓ Admin approval required</li>
+          </ul>
+          <div class="role-badge pending">Pending Approval</div>
+        </div>
+      </div>
+      <div class="role-notice" id="receiverNotice" style="display:none">
+        <span>ℹ️</span> Receiver accounts require admin verification. You'll be notified once approved.
+      </div>
+      <div class="step2-nav">
+        <button class="btn-outline" onclick="goStep(1)">← Back</button>
+        <button class="btn-primary" id="step2Next" onclick="goStep3()" disabled>Continue <span>→</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: OTP Verification -->
+    <div class="reg-step" id="step3">
+      <div class="step-title">
+        <h2>Verify Phone Number</h2>
+        <p>A 6-digit OTP has been sent to <strong id="otpPhoneDisplay"></strong></p>
+      </div>
+      <div class="otp-container">
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-box" id="otp0" oninput="otpInput(0)"/>
+          <input type="text" maxlength="1" class="otp-box" id="otp1" oninput="otpInput(1)"/>
+          <input type="text" maxlength="1" class="otp-box" id="otp2" oninput="otpInput(2)"/>
+          <input type="text" maxlength="1" class="otp-box" id="otp3" oninput="otpInput(3)"/>
+          <input type="text" maxlength="1" class="otp-box" id="otp4" oninput="otpInput(4)"/>
+          <input type="text" maxlength="1" class="otp-box" id="otp5" oninput="otpInput(5)"/>
+        </div>
+        <div class="otp-hint">
+          <div class="demo-otp-badge">Demo OTP: <strong id="demoOtpDisplay"></strong></div>
+        </div>
+        <div id="otpTimer" class="otp-timer">Resend OTP in <strong id="timerCount">60</strong>s</div>
+        <button id="resendBtn" class="btn-link" style="display:none" onclick="resendOTP()">Resend OTP</button>
+        <div id="otpError" class="otp-error"></div>
+      </div>
+      <div class="step2-nav">
+        <button class="btn-outline" onclick="goStep(2)">← Back</button>
+        <button class="btn-primary" id="step3VerifyBtn" onclick="verifyOTP()">Verify &amp; Register <span>→</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Success -->
+    <div class="reg-step" id="step4">
+      <div class="success-container">
+        <div class="success-icon" id="successIcon">✓</div>
+        <h2 id="successTitle">Registration Successful!</h2>
+        <p id="successMsg">Welcome to NourishNet. You can now log in to your account.</p>
+        <div class="success-actions">
+          <a href="index.html" class="btn-primary">Go to Login →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="register.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

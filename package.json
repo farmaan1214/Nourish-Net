@@ -1,0 +1,22 @@
+{
+  "name": "nourishnet",
+  "version": "1.0.0",
+  "description": "NourishNet — AI-powered Food Donation Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["food-donation", "ngo", "nodejs", "sqlite", "express"],
+  "author": "Farmaan",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "sqlite3": "^5.1.7"
+  },
+  "type": "commonjs"
+}

@@ -1,0 +1,26 @@
+/* ===== ADMIN CSS ===== */
+.admin-theme { --accent: #F59E0B; --accent-pale: #FEF3C7; }
+.admin-theme .sidebar { background: #1a1a2e; }
+
+/* REPORTS GRID */
+.reports-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.report-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; box-shadow: var(--shadow); }
+.report-card h3 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 16px; }
+
+/* MINI PENDING LIST */
+.pending-mini-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pending-mini-item:last-child { border-bottom: none; }
+.pending-mini-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amber-pale); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.pending-mini-name { font-weight: 600; font-size: 0.88rem; }
+.pending-mini-time { font-size: 0.75rem; color: var(--text-3); }
+.pending-mini-actions { margin-left: auto; display: flex; gap: 6px; }
+.mini-approve { padding: 4px 10px; background: var(--green); color: white; border: none; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+.mini-reject { padding: 4px 10px; background: var(--red-pale); color: var(--red); border: 1px solid var(--red); border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+
+/* MODAL DETAIL ROWS */
+.detail-row { display: flex; gap: 8px; margin-bottom: 12px; align-items: flex-start; }
+.detail-label { min-width: 120px; font-size: 0.82rem; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.3px; }
+.detail-value { font-size: 0.92rem; color: var(--text); }
