@@ -14,11 +14,21 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── Database Setup ──────────────────────────────────────────────────────────
-// On Render.com, use the persistent disk at /data. Locally, use project root.
-const DB_DIR  = IS_PROD ? '/data' : __dirname;
+// ─── Database Setup ──────────────────────────────────────────────────────────
+// On Render.com, use the persistent disk at /data if available. Otherwise, fallback to project root.
+let DB_DIR = __dirname;
+if (IS_PROD) {
+  try {
+    if (!fs.existsSync('/data')) {
+      fs.mkdirSync('/data', { recursive: true });
+    }
+    fs.accessSync('/data', fs.constants.W_OK);
+    DB_DIR = '/data';
+  } catch (err) {
+    console.warn('⚠️ Persistent disk (/data) not available or writable. Falling back to local directory for SQLite. Data will reset on deployment.');
+  }
+}
 const DB_PATH = path.join(DB_DIR, 'database.sqlite');
-if (IS_PROD && !fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
-
 const db = new sqlite3.Database(DB_PATH, (err) => {
   if (err) {
     console.error('❌ Error opening database:', err.message);
